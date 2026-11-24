@@ -1,86 +1,55 @@
-# CvSU Mini Store — Laboratory Exercise 3
+# CvSU Mini Store — Laboratory Exercise 4
 
-A React mini product catalog demonstrating props, component communication, conditional rendering, children, and list rendering with `.map()`.
+React live search and filter using `useState`, `useEffect`, controlled inputs, debounce, filtering, and sorting.
 
-## Requirements
-- Node.js and npm
-- Visual Studio Code
+## Run
+1. Open this folder in VS Code.
+2. Open Terminal > New Terminal.
+3. Run `npm install`.
+4. Run `npm run dev`.
+5. Open the localhost URL shown in the terminal.
 
-## Run the project
-1. Extract the ZIP file.
-2. Open the `product-catalog` folder in VS Code.
-3. Open the VS Code terminal: **Terminal > New Terminal**.
-4. Run:
-
-   ```bash
-   npm install
-   npm run dev
-   ```
-
-5. Open the local URL shown in the terminal (usually `http://localhost:5173`).
-
-## Project structure
-
-```text
-product-catalog/
-├── index.html
-├── package.json
-├── README.md
-└── src/
-    ├── components/
-    │   ├── ProductCard.jsx
-    │   └── ProductCard.css
-    ├── data/
-    │   └── products.js
-    ├── App.jsx
-    ├── App.css
-    └── main.jsx
-```
+## Features
+- Controlled search input, category dropdown, and price sorting
+- Clear Filters button
+- 300ms debounced search with cleanup
+- Combined keyword and category filtering
+- Result count and no-results message
+- Browser tab title updates with result count
+- Lab 3 cart callback remains functional
 
 ## Guide Questions
 
-1. **What is the difference between props and state?**  
-   Props are values passed from a parent component to a child component. State is data a component manages and can update while the app is running.
+1. **Why use `searchText` and `debouncedSearch` separately?**  
+   `searchText` changes immediately as the user types. `debouncedSearch` changes after a 300ms pause, so the app does not filter on every keystroke.
 
-2. **Why can a child component not modify the props it receives?**  
-   Props are read-only. Keeping them unchanged helps make components predictable and lets the parent control the data.
+2. **What if the debounce effect has no cleanup function?**  
+   Old timers keep running after new text is entered. This causes unnecessary updates and may process outdated search values. Cleanup cancels the previous timer.
 
-3. **How does the onAddToCart callback allow data to flow from child to parent even though props only flow downward?**  
-   The parent passes a function to the child as a prop. When the button is clicked, the child calls that function and sends the product title back to the parent.
+3. **What is the dependency array? What if it is empty or omitted?**  
+   It tells React when to rerun an effect. An empty array runs after the initial render only. If omitted, the effect runs after every render.
 
-4. **Why is the key prop required when rendering a list with .map()? What could happen if it is missing or duplicated?**  
-   A key helps React identify each item in a list when it updates the page. Missing or duplicated keys can cause warnings and may make React update the wrong list item.
+4. **Why avoid sorting the original products array?**  
+   `sort()` mutates the array. Changing the original data can cause unexpected behavior elsewhere. A copy should be sorted instead.
 
-5. **What does the children prop allow you to do that a normal prop does not?**  
-   The children prop lets a component receive content placed between its opening and closing tags, such as a New or Popular badge.
+5. **Should filtered products be stored in state or calculated?**  
+   Calculate them from the existing search, category, and sort states. They are derived data, so another state is unnecessary and could become out of sync.
 
-## Suggested Git commits
-
-Run these commands in the project terminal after opening the project folder:
-
-```bash
-git init
-git add .
-git commit -m "Initial React product catalog setup"
-git commit --allow-empty -m "Add reusable ProductCard component"
-git commit --allow-empty -m "Implement cart callback and message"
-git commit --allow-empty -m "Style responsive product catalog"
-```
-
-Then create an empty GitHub repository named `product-catalog` and connect it (replace the URL with your own repository URL):
+## Git workflow
+Create the Lab 4 branch before editing:
 
 ```bash
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/product-catalog.git
-git push -u origin main
+git switch -c lab4-live-search
 ```
 
-**Note:** The empty commits above are only an example of commit messages. For meaningful commits, make each commit after the related files or changes are added. See the step-by-step commit example below.
+Make at least four meaningful commits:
+1. `Add controlled SearchBar component`
+2. `Implement product filtering and price sorting`
+3. `Add debounced search with useEffect cleanup`
+4. `Add result title, clear filters, and empty state`
 
-### Better four-commit workflow
-
-If you want the commits to reflect the actual work, use this sequence while building:
-1. Create the Vite project and commit the initial setup.
-2. Add `products.js` and `ProductCard.jsx`, then commit.
-3. Add the parent cart state and callback, then commit.
-4. Add CSS styling and README, then commit.
+Push both branches:
+```bash
+git push -u origin lab4-live-search
+git push origin main
+```
